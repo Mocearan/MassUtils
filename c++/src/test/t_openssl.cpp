@@ -1,3 +1,14 @@
+
+
+/* =============================================================================
+* -> FilePath     : /Mass/MassUtils/c++/src/test/t_openssl.cpp
+* -> Author       : Mass
+* -> Date         : 2020-06-15 14:44:43
+* -> version      : 
+* -> LastEditors  : Mass
+* -> LastEditTime : 2020-06-15 14:44:44
+* -> Description  : 
+* =============================================================================*/
 #include <openssl/hmac.h>
 #include <openssl/evp.h>
 
@@ -7,7 +18,7 @@ using namespace std;
 #include <cstring>
 #include <string>
 
-auto main(void) -> int
+void test_hmac(void)
 {
 #if 0
 	unsigned char md[EVP_MAX_MD_SIZE];
@@ -56,5 +67,13 @@ auto main(void) -> int
     cout << endl;
 
     delete mac; mac = NULL;
+}
+
+
+#include "crypt.h"
+
+auto main(void) -> int
+{
+    test_hmac();
 
 }

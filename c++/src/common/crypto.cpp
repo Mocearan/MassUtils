@@ -175,13 +175,13 @@ crypto_ptr CCryptoFactory::GetUtils(crypto_utils_type type)
 	case crypto_utils_type::ssl_sha256:
 		return std::make_shared<SslSHA256Utils>();
 	case crypto_utils_type::ssl_hmac:
-		return new SslHMACUtils();
+		//return new SslHMACUtils();
 	case crypto_utils_type::win_md5:
-		return new WinMD5Utils();
+		//return new WinMD5Utils();
 	case crypto_utils_type::win_sha256:
-		return new WinSHA256Utils();
+		//return new WinSHA256Utils();
 	case crypto_utils_type::win_hmac:
-		return new WinHMACUtils();
+		//return new WinHMACUtils();
 	default:
 		return NULL;
 	}
