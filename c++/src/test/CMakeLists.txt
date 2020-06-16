@@ -18,7 +18,12 @@ target_link_libraries(tsingle
 )
 
 add_executable(tstring t_stringutils.cpp ${BASE_PATH}/stringutils.cpp)
+add_executable(tcrypt t_openssl.cpp ${BASE_PATH}/crypto.cpp ${BASE_PATH}/stringutils.cpp)
+target_link_libraries(tcrypt
+    ssl crypto
+)
 
 install(TARGETS tsingle RUNTIME DESTINATION test)
 install(TARGETS tstring RUNTIME DESTINATION test)
+install(TARGETS tcrypt RUNTIME DESTINATION test)
 #install(FILES ${CONFIG_PATH}/log4cplus.properties DESTINATION test)

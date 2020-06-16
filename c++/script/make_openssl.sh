@@ -96,9 +96,14 @@ build_log4cxx(){
     then
         cd $OPENSSL
         
-        ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl -d shared
+        ./config --prefix=/usr/local/openssl -d shared
         make -j4
         make install
+
+        mv /usr/bin/openssl /usr/bin/openssl.bak
+        ln -sf /usr/local/openssl/bin/openssl /usr/bin/openssl
+        echo "/usr/local/openssl/lib" >> /etc/ld.so.conf
+        ldconfig -v 
     fi
 }
 

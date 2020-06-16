@@ -1,3 +1,14 @@
+
+
+/* =============================================================================
+* -> FilePath     : /Mass/MassUtils/c++/src/common/stringutils.h
+* -> Author       : Mass
+* -> Date         : 2020-06-11 16:08:13
+* -> version      : 
+* -> LastEditors  : Mass
+* -> LastEditTime : 2020-06-16 17:13:31
+* -> Description  : 
+* =============================================================================*/
 #ifndef __MASS_COMMON_STRINGUTILS_H__
 #define __MASS_COMMON_STRINGUTILS_H__
 
