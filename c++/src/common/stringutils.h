@@ -69,6 +69,10 @@ public:
     static std::string hex(const char* data, int size);
     static std::string hex(const std::string& data);
 
+    static bool str2int(const std::string& n, int& result, int base = 10);
+    static bool str2uint64(const std::string& n, uint64_t& result, int base = 10);
+    static bool byteUnit2double(const std::string& n, double& result);
+    static bool byteUnit2Int(const std::string& n, int64_t& result);
 public:
 
     static std::string base64_encode(const std::string& src);

@@ -221,3 +221,63 @@ std::string CStringUtils::hex(const std::string& data)
 {
     return hex(data.data(), (int)data.length());
 }
+
+
+bool CStringUtils::str2int(const std::string& n, int& result, int base)
+{
+    char* end = NULL;
+    result = strtol(n.c_str(), &end, base);
+    return n.c_str() + n.length() == end;
+}
+
+bool CStringUtils::str2uint64(const std::string& n, uint64_t& result, int base = 10)
+{
+    char* end = NULL;
+    result = strtoull(n.c_str(), &end, base);
+    return n.c_str() + n.length() == end;
+}
+
+
+bool CStringUtils::byteUnit2double(const std::string& n, double& result) 
+{
+    size_t pos = 0;
+	for (; pos < n.size(); ++pos) {
+		if (n[pos] != '.' && (n[pos] < '0' || n[pos] > '9')) {
+			break;
+		}
+	}
+	char* end = NULL;
+	result = strtod(n.c_str(), &end);
+	if (&n[pos] != end) {
+		return false;
+	}
+	std::string unit;
+	while (pos < n.size()) {
+		unit.append(1, toupper(n[pos++]));
+	}
+	if (unit.empty() || unit == "B") {
+		return true;
+	}
+	else if (unit == "K" || unit == "KB") {
+		result *= 1024;
+		return true;
+	}
+	else if (unit == "M" || unit == "MB") {
+		result *= 1024 * 1024;
+		return true;
+	}
+	return false;
+}
+
+
+bool CStringUtils::byteUnit2Int(const std::string& n, int64_t& result) 
+{
+    double tmp;
+	if (byteUnit2double(n, tmp)) {
+		result = (int64_t)tmp;
+		return true;
+	}
+	return false;
+}
+
+
