@@ -1,7 +1,13 @@
-/*
-*@Author    Mass
-*@Date      2020.5.20
-*@Desc:
+
+
+/* =============================================================================
+* -> FilePath     : /Mass/MassUtils/c++/src/common/singleton.h
+* -> Author       : Mass
+* -> Date         : 2020-06-18 14:49:52
+* -> version      : 
+* -> LastEditors  : Mass
+* -> LastEditTime : 2020-06-18 14:49:52
+* -> Description  : 
 *   a no memory leakage and thread-safe singleton template
 *@Usage:
 *       class A : public Singleton<A> {
@@ -13,7 +19,7 @@
         }
 *@Note:
     -lpthread [call_once]
-*/
+*===================================================================================*/
 
 #ifndef __MASSUTILS_COMMON_SINGLETON_H__
 #define __MASSUTILS_COMMON_SINGLETON_H__
@@ -22,9 +28,7 @@
 
 #include <memory>
 #include <mutex>
-#include <functional>
 
-#include <iostream>
 using namespace std;
 
 

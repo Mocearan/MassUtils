@@ -12,10 +12,12 @@
 #ifndef __MASS_COMMON_CRYPTOUTILS_H__
 #define __MASS_COMMON_CRYPTOUTILS_H__
 
-#include "nonimplable.h"
+#include "basedef.h"
 
 #include <memory>
 #include <string>
+
+BEGIN_NAMESPACE_MASS
 
 enum hmac_method_flag {
 	h_md5,
@@ -61,7 +63,7 @@ private:
 
 
 /*
-     The following three interfaces are for scenarios with 
+    The following three interfaces are for scenarios with 
         small amounts of data
 */
 
@@ -69,6 +71,6 @@ std::string md5(const std::string& data);
 std::string sha256(const std::string& data);
 std::string hmac(const std::string& key, const std::string& data, hmac_method_flag flag);
 
-
+END_NAMESPACE_MASS
 
 #endif // __MASS_COMMON_CRYPTOUTILS_H__

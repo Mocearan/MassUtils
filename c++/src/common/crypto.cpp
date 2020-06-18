@@ -8,9 +8,11 @@
 * -> LastEditors  : Mass
 * -> LastEditTime : 2020-06-15 15:19:18
 * -> Description  : 
+		-lssl -lcrypto
 * =============================================================================*/
 
 #include "crypto.h"
+#include "noninstantiable.h"
 
 #include <openssl/md5.h>
 #include <openssl/sha.h>
@@ -20,8 +22,12 @@
 #include <cstring>
 #include <cassert>
 
+
+BEGIN_NAMESPACE_MASS
+
 //interface 
-class CCryptoUtilsInterface {
+class CCryptoUtilsInterface 
+{
 public:
     virtual ~CCryptoUtilsInterface(){}
 
@@ -87,7 +93,7 @@ public:
 		HMAC_CTX_init(ctx_);
 
 		const static EVP_MD *(*evp_method_array[])(void) = {
-			EVP_md5, EVP_sha1, EVP_sha256, EVP_sha384,EVP_sha512
+			EVP_md5, EVP_sha, EVP_sha1, EVP_sha256, EVP_sha384, EVP_sha512
 		};
 		HMAC_Init_ex(ctx_, key.data(), key.length(), evp_method_array[md](), NULL);
 	}
@@ -376,7 +382,7 @@ private:
 
 // utils factory
 class CCryptoFactory final
-    : public Mass::nonimplable
+    : public Mass::noninstantiable
 {
 public:
     static crypto_ptr GetUtils(crypto_utils_type type)
@@ -447,7 +453,6 @@ std::string md5(const std::string& data)
 	return std::string((char*)md);
 }
 
-
 std::string sha256(const std::string& data)
 {
 	unsigned char md[SHA256_DIGEST_LENGTH];
@@ -481,3 +486,4 @@ std::string hmac(const std::string& key, const std::string& data, hmac_method_fl
 }
 
 
+END_NAMESPACE_MASS

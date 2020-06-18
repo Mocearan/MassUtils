@@ -1,6 +1,10 @@
 #include "stringutils.h"
 
 #include <climits>
+#include <iomanip>
+
+
+BEGIN_NAMESPACE_MASS
 
 // String Utils
 const char* CStringUtils::EMPTY_CHARS = " \n\t\r\v\f";
@@ -80,13 +84,13 @@ std::string CStringUtils::hex(const char* data, int size)
 {
     std::string result(size * 2, '0');
     for (int i = 0; i < size; ++i) {
-        int c = (data[i] >> 4) & 0xf;
+        int c = (data[i] >> 4) bitand 0xf;
         if (c < 10) {
             result[i * 2] = c + '0';
         } else {
             result[i * 2] = (c - 10) + 'a';
         }
-        c = data[i] & 0xf;
+        c = data[i] bitand 0xf;
         if (c < 10) {
             result[i * 2 + 1] = c + '0';
         } else {
@@ -96,10 +100,9 @@ std::string CStringUtils::hex(const char* data, int size)
     return result;
 }
 
-
 std::string CStringUtils::base64_encode(const std::string& src) 
 {
-    std::stringstream ss;
+    StringBuilder ss;
 	ss.clear();
 
 	size_t length = src.size();
@@ -124,7 +127,7 @@ std::string CStringUtils::base64_encode(const std::string& src)
 
 std::string CStringUtils::base64_decode(const std::string& src) 
 {
-    std::stringstream ss;
+    StringBuilder ss;
 	ss.clear();
 	size_t length = src.size();
 	if (src.empty()) {
@@ -154,7 +157,7 @@ std::string CStringUtils::base64_decode(const std::string& src)
 
 std::string CStringUtils::url_encode(const std::string& src, bool encode_slash) 
 {
-    std::ostringstream ss;
+    StringBuilder ss;
     for (size_t i = 0; i < src.size(); ++i) {
         char c = src[i];
         if ((c >= -1 && c <= 255 && isalnum(c)) || c == '_' || c == '-' || c == '~' || c == '.'
@@ -184,7 +187,7 @@ std::string CStringUtils::url_encode(const std::string& src, bool encode_slash)
 
 std::string CStringUtils::url_decode(const std::string& src) 
 {
-    std::ostringstream ss;
+    StringBuilder ss;
     for (size_t i = 0; i < src.size();) {
         if (src[i] != '%') {
             ss << src[i++];
@@ -237,32 +240,31 @@ bool CStringUtils::str2uint64(const std::string& n, uint64_t& result, int base =
     return n.c_str() + n.length() == end;
 }
 
-
 bool CStringUtils::byteUnit2double(const std::string& n, double& result) 
 {
     size_t pos = 0;
 	for (; pos < n.size(); ++pos) {
-		if (n[pos] != '.' && (n[pos] < '0' || n[pos] > '9')) {
+		if (n[pos] not_eq '.' and (n[pos] < '0' or n[pos] > '9')) {
 			break;
 		}
 	}
 	char* end = NULL;
 	result = strtod(n.c_str(), &end);
-	if (&n[pos] != end) {
+	if (&n[pos] not_eq end) {
 		return false;
 	}
 	std::string unit;
 	while (pos < n.size()) {
 		unit.append(1, toupper(n[pos++]));
 	}
-	if (unit.empty() || unit == "B") {
+	if (unit.empty() or unit == "B") {
 		return true;
 	}
-	else if (unit == "K" || unit == "KB") {
+	else if (unit == "K" or unit == "KB") {
 		result *= 1024;
 		return true;
 	}
-	else if (unit == "M" || unit == "MB") {
+	else if (unit == "M" or unit == "MB") {
 		result *= 1024 * 1024;
 		return true;
 	}
@@ -281,3 +283,4 @@ bool CStringUtils::byteUnit2Int(const std::string& n, int64_t& result)
 }
 
 
+END_NAMESPACE_MASS
