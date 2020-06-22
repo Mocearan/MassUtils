@@ -1,12 +1,11 @@
 
-
 /* =============================================================================
 * -> FilePath     : /Mass/MassUtils/c++/src/common/singleton.h
 * -> Author       : Mass
-* -> Date         : 2020-06-18 14:49:52
+* -> Date         : 2020.5.20 14:49:52
 * -> version      : 
 * -> LastEditors  : Mass
-* -> LastEditTime : 2020-06-18 14:49:52
+* -> LastEditTime : 2020.5.20 14:49:52
 * -> Description  : 
 *   a no memory leakage and thread-safe singleton template
 *@Usage:
@@ -31,46 +30,41 @@
 
 using namespace std;
 
-
-
 BEGIN_NAMESPACE_MASS
 
-template<typename T>
-class Singleton  : public noncopyable {
+template <typename T>
+class Singleton : public noncopyable
+{
 public:
-
-    template<typename ...Args>
-    static std::shared_ptr<T> GetInstance(Args&&... args) 
-    {
-        std::call_once(s_bCalled, [=]( Args&&... args){
-            Singleton::s_instance.reset(new T(std::forward<Args>(args)...));
-        }, std::forward<Args>(args)...);
+    template <typename... Args>
+    static std::shared_ptr<T> GetInstance(Args &&... args){
+        std::call_once(
+            s_bCalled, [=](Args &&... args) {
+                Singleton::s_instance.reset(new T(std::forward<Args>(args)...));
+            }, std::forward<Args>(args)...);
         return Singleton::s_instance;
     }
 
-    
-    static void DelInstance() {
-        if(Singleton::s_instance) {
+    static void DelInstance(){
+        if (Singleton::s_instance)
             Singleton::s_instance.reset(nullptr);
-        }
     }
-    
-protected:
 
-    Singleton()	{}
-    
+protected:
+    Singleton() {}
+
     virtual ~Singleton() {}
-    
+
 private:
     static std::shared_ptr<T> s_instance;
     static std::once_flag s_bCalled;
 };
 
-template<typename T>
+template <typename T>
 std::shared_ptr<T> Singleton<T>::s_instance = nullptr;
 
-template<typename T>
-std::once_flag  Singleton<T>::s_bCalled;
+template <typename T>
+std::once_flag Singleton<T>::s_bCalled;
 
 END_NAMESPACE_MASS
 

@@ -9,9 +9,8 @@
 * -> LastEditTime : 2020-06-17 14:04:36
 * -> Description  : 
 * =============================================================================*/
-#ifndef __MASS_COMMON_CRYPTOUTILS_H__
-#define __MASS_COMMON_CRYPTOUTILS_H__
-
+#ifndef __MASS_COMMON_DATETIMEUTILS_H__
+#define __MASS_COMMON_DATETIMEUTILS_H__
 
 #include "noninstantiable.h"
 
@@ -63,6 +62,6 @@ char* strptime(const char* buf, const char* fmt, struct tm* tm);
 
 #endif // _WIN32
 
-#endif // __MASS_COMMON_CRYPTOUTILS_H__
+#endif // __MASS_COMMON_DATETIMEUTILS_H__
 
 END_NAMESPACE_MASS
