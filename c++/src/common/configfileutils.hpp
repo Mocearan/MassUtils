@@ -17,14 +17,13 @@
 #include "simplelogutils.hpp"
 
 #include <cstring>
-#include <map>
 
 BEGIN_NAMESPACE_MASS
 
 class CConfigFileReader final
-    : public Singleton<CConfigFileReader>
+    : public Mass::Singleton<CConfigFileReader>
 {
-    friend class Singleton<CConfigFileReader>;
+    friend class Mass::Singleton<CConfigFileReader>;
     CConfigFileReader(const string &filename);
 
 public:
@@ -44,7 +43,6 @@ private:
     StringMap m_config_map;
     string m_config_file;
 };
-
 
 
 CConfigFileReader::CConfigFileReader(const string &filename)
@@ -68,15 +66,18 @@ int CConfigFileReader::SetConfigValue(const string &name, const string &value)
     return _write_file();
 }
 
+#include <iostream>
+
 string CConfigFileReader::GetConfigName(const string &name)
 {
-    if (not m_bLoaded)
-        return nullptr;
+    string value;
 
-    char *value = nullptr;
+    if (not m_bLoaded)
+        return value;
+
     auto it = m_config_map.find(name);
     if (it not_eq m_config_map.end())
-        value = (char *)it->second.data();
+        value = it->second.data();
 
     return value;
 }
@@ -107,11 +108,13 @@ int CConfigFileReader::_write_file(const string &filename)
         return -1;
 
     char szPaire[128]{'\0'};
-    for (const auto &it : m_config_map){
+    for (const auto &it : m_config_map)
+    {
         bzero(szPaire, sizeof(szPaire));
         snprintf(szPaire, sizeof(szPaire), "%s=%s\n", it.first.data(), it.second.data());
         auto ret = fwrite(szPaire, strlen(szPaire), 1, fp);
-        if (ret not_eq 1) {
+        if (ret not_eq 1)
+        {
             fclose(fp);
             return -1;
         }
@@ -126,13 +129,15 @@ void CConfigFileReader::_load_file(const string &filename)
     m_config_file.append(filename);
 
     auto fp = fopen(filename.data(), "r");
-    if (not fp){
-        log(loglevel::ERROR, "can not open %s, errno = %d", filename, errno);
+    if (not fp)
+    {
+        log(loglevel::ERROR, "can not open %s, errno = %d", filename.data(), errno);
         return;
     }
 
     char buf[256]{'\0'};
-    for (;;){
+    for (;;)
+    {
         char *p = fgets(buf, 256, fp);
         if (not p)
             break;
@@ -168,7 +173,8 @@ char *CConfigFileReader::trim(char *name)
 
     // remove ending space or tab
     char *end_pos = name + strlen(name) - 1;
-    while ((*end_pos == ' ') or (*end_pos == '\t')){
+    while ((*end_pos == ' ') or (*end_pos == '\t'))
+    {
         *end_pos = 0;
         end_pos--;
     }

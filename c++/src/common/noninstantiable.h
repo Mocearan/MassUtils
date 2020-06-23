@@ -1,16 +1,4 @@
 
-
-/* =============================================================================
-* -> FilePath     : /Mass/MassUtils/c++/src/common/noninstantiable.h
-* -> Author       : Mass
-* -> Date         : 2020-06-18 11:01:54
-* -> version      : 
-* -> LastEditors  : Mass
-* -> LastEditTime : 2020-06-18 13:31:53
-* -> Description  : 
-* =============================================================================*/
-
-
 /* =============================================================================
 * -> FilePath     : /Mass/MassUtils/c++/src/common/nonimplable.h
 * -> Author       : Mass

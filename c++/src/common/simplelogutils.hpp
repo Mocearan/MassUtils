@@ -24,6 +24,7 @@
 
 #include "stringutils.h"
 #include "datetimeutil.h"
+#include "singleton.h"
 
 #include <cstdarg>
 
@@ -53,7 +54,7 @@ void set_log_filename(const std::string &filename);
 
 void set_log_rotate_size(int size);
 
-void log(const string &fmt, ...)
+void log(const std::string &fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt.data());

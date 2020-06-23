@@ -3,6 +3,8 @@
 #include <climits>
 #include <iomanip>
 
+#include <cstring>
+
 
 BEGIN_NAMESPACE_MASS
 
@@ -49,6 +51,47 @@ std::string CStringUtils::join(const std::vector<std::string>& strs, const std::
         restr = restr + strs[i] + s;
     restr += strs[n - 1];
     return restr;
+}
+
+std::string& CStringUtils::replace(std::string &src, char old, char new_)
+{
+    if(src.empty())
+        return src;
+
+    for(auto& c : src)
+        if(c == old) c = new_;
+
+    return src;
+}
+
+// 由于被替换的内容可能包含?号，所以需要更新开始搜寻的位置信息来避免替换刚刚插入的?号
+void CStringUtils::replace_mark(std::string &str, std::string &new_value, uint32_t &begin_pos)
+{
+    std::string::size_type pos = str.find('?', begin_pos);
+    if (pos == std::string::npos){
+        return;
+    }
+
+    std::string prime_new_value = "'" + new_value + "'";
+    str.replace(pos, 1, prime_new_value);
+
+    begin_pos = pos + prime_new_value.size();
+}
+
+void CStringUtils::replace_mark(std::string &str, uint32_t new_value, uint32_t &begin_pos)
+{
+    StringBuilder ss;
+    ss << new_value;
+
+    std::string str_value = ss.str();
+    std::string::size_type pos = str.find('?', begin_pos);
+    if (pos == std::string::npos)
+    {
+        return;
+    }
+
+    str.replace(pos, 1, str_value);
+    begin_pos = pos + str_value.size();
 }
 
 std::string CStringUtils::lower(const std::string& s) 
@@ -225,6 +268,17 @@ std::string CStringUtils::hex(const std::string& data)
     return hex(data.data(), (int)data.length());
 }
 
+std::string CStringUtils::int2str(uint32_t i)
+{
+    StringBuilder ss;
+    ss << i;
+    return ss.str();
+}
+
+uint32_t CStringUtils::str2int(const std::string &value)
+{
+    return (uint32_t)atoi(value.data());
+}
 
 bool CStringUtils::str2int(const std::string& n, int& result, int base)
 {
@@ -282,5 +336,46 @@ bool CStringUtils::byteUnit2Int(const std::string& n, int64_t& result)
 	return false;
 }
 
+CStrExplore::CStrExplore(char *str, char seperator)
+{
+    m_item_cnt = 1;
+    char *pos = str;
+    for (; *pos; ++pos)
+        if (*pos == seperator)
+            ++m_item_cnt;
+
+    m_item_list = new char *[m_item_cnt];
+
+    int idx = 0;
+
+    char *start = pos = str;
+    for (; *pos; ++pos)
+        if (pos not_eq start and *pos == seperator)
+        {
+            uint32_t len = pos - start;
+            m_item_list[idx] = new char[len + 1];
+            strncpy(m_item_list[idx], start, len);
+            m_item_list[idx][len] = '\0';
+
+            idx++;
+            start = pos + 1;
+        }
+
+    uint32_t len = pos - start;
+    if (len != 0)
+    {
+        m_item_list[idx] = new char[len + 1];
+        strncpy(m_item_list[idx], start, len);
+        m_item_list[idx][len] = '\0';
+    }
+}
+
+CStrExplore::~CStrExplore()
+{
+    for (uint32_t i = 0; i < m_item_cnt; ++i)
+        delete[] m_item_list[i];
+
+    delete[] m_item_list;
+}
 
 END_NAMESPACE_MASS

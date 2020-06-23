@@ -58,7 +58,13 @@ public:
 
     static std::string join(const std::vector<std::string>& strs, const std::string& s);
 
-    static std::string lower(const std::string& s);
+    static std::string &replace(std::string &src, char old, char new_);
+
+    static void replace_mark(std::string &str, std::string &new_value, uint32_t &begin_pos);
+
+    static void replace_mark(std::string &str, uint32_t new_value, uint32_t &begin_pos);
+
+    static std::string lower(const std::string &s);
 
     static std::string upper(const std::string& s);
 
@@ -68,7 +74,10 @@ public:
     static std::string hex(const char* data, int size);
     static std::string hex(const std::string& data);
 
-    static bool str2int(const std::string& n, int& result, int base = 10);
+    static std::string int2str(uint32_t i);
+
+    static uint32_t str2int(const std::string &value);
+    static bool str2int(const std::string &n, int &result, int base = 10);
     static bool str2uint64(const std::string& n, uint64_t& result, int base = 10);
     
     template<typename Inttype>
@@ -114,6 +123,22 @@ private:
     const static char* EMPTY_CHARS;
     const static char* BASE64_CHARS;
 };
+
+class CStrExplore
+{
+public:
+    CStrExplore(char *str, char seperator);
+    virtual ~CStrExplore();
+
+    uint32_t GetItemCnt() { return m_item_cnt; }
+    char *GetItem(uint32_t idx) { return m_item_list[idx]; }
+
+private:
+    uint32_t m_item_cnt;
+    char **m_item_list;
+};
+
+
 
 END_NAMESPACE_MASS
 

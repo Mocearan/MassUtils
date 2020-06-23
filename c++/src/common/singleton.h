@@ -17,7 +17,7 @@
         public:
             static int init(void);
             virtual ~A(){...}
-            
+
         ...// class A's own stuff
         }
 *@Note:
@@ -58,7 +58,7 @@ public:
     {
         if (Singleton::s_instance)
         {
-            Singleton::s_instance.reset(nullptr);
+            Singleton::s_instance.reset();
         }
     }
 
