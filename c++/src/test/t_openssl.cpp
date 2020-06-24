@@ -20,6 +20,7 @@ using namespace std;
 #include <cstring>
 #include <string>
 
+
 void test_hmac(void)
 {
 #if 0
@@ -134,6 +135,7 @@ void test_1()
 
 
 #include "crypto.h"
+using namespace Mass;
 void test_fact()
 {
     unsigned char* mac = new unsigned char(EVP_MAX_MD_SIZE);
@@ -150,6 +152,7 @@ void test_fact()
 }
 
 #include "stringutils.h"
+
 void test_2()
 {
     auto mac = CStringUtils::hex(hmac("012345678", "hello world", hmac_method_flag::h_md5));

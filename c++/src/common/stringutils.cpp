@@ -1,7 +1,6 @@
 #include "stringutils.h"
 
 #include <climits>
-#include <iomanip>
 
 #include <cstring>
 
@@ -287,7 +286,7 @@ bool CStringUtils::str2int(const std::string& n, int& result, int base)
     return n.c_str() + n.length() == end;
 }
 
-bool CStringUtils::str2uint64(const std::string& n, uint64_t& result, int base = 10)
+bool CStringUtils::str2uint64(const std::string& n, uint64_t& result, int base)
 {
     char* end = NULL;
     result = strtoull(n.c_str(), &end, base);

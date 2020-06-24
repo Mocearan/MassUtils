@@ -30,7 +30,9 @@
 
 #include <unistd.h>
 
+
 BEGIN_NAMESPACE_MASS
+
 
 enum loglevel{
     TRACE = 0,
@@ -70,7 +72,7 @@ void log(loglevel l)
         LogStream(l) << __FILE__ << ':' << __LINE__ << ' ';
 }
 
-void log(loglevel l, const string &fmt, ...)
+void log(loglevel l, const std::string &fmt, ...)
 {
     va_list ap;
     va_start(ap, fmt.data());
@@ -85,7 +87,7 @@ public:
     static const string level_to_string(const loglevel level);
     static loglevel string_to_level(const std::string &level);
 
-    static void logging(loglevel level, const string &fmt, ...);
+    static void logging(loglevel level, const std::string &fmt, ...);
 
     static void check_and_rotate();
 
@@ -117,7 +119,7 @@ public:
         {
             return;
         }
-        std::ostringstream out;
+        StringBuilder out;
         out << "/proc/self/fd/" << fd;
         char filename[1024];
         int n = readlink(out.str().c_str(), filename, sizeof(filename));
@@ -135,7 +137,7 @@ public:
     {
         return Provider::GetInstance()->s_log_filename();
     }
-    static inline void SetLogFilename(const string& name)
+    static inline void SetLogFilename(const std::string& name)
     {
         FILE *fp = fopen(name.data(), "a");
         if(not fp)
@@ -245,7 +247,7 @@ loglevel LogUtil::string_to_level(const std::string &level)
     return loglevel::DEBUG;
 }
 
-void LogUtil::logging(loglevel level, const string& fmt, ...)
+void LogUtil::logging(loglevel level, const std::string& fmt, ...)
 {
     StringBuilder final_fmt;
     int64_t ts = CTimeUtil::now_ms();

@@ -12,10 +12,16 @@
 #ifndef __MASS_COMMON_STRINGUTILS_H__
 #define __MASS_COMMON_STRINGUTILS_H__
 
+//#define CRYPTO_REQUIRED
+
+#ifdef CRYPTO_REQUIRED
 #include "crypto.h"
+#endif
+
 #include "noninstantiable.h"
 
 #include <vector>
+#include <iomanip>
 
 BEGIN_NAMESPACE_MASS
 
@@ -112,11 +118,12 @@ public:
     static std::string url_encode(const std::string& src, bool encode_slash = true);
     static std::string url_decode(const std::string& src);
 
-    static std::string hmac_sha256_hex(const std::string& key, const std::string& data)
-	{
-		return hex(hmac(key, data, hmac_method_flag::h_sha256));
-	}
-
+#ifdef CRYPTO_REQUIRED
+    static std::string hmac_sha256_hex(const std::string &key, const std::string &data)
+    {
+        return hex(hmac(key, data, hmac_method_flag::h_sha256));
+    }
+#endif
 private:
     static inline unsigned char base64_decode_char(const unsigned char);
 
