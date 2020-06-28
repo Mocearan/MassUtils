@@ -1,5 +1,4 @@
 
-
 /* =============================================================================
 * -> FilePath     : /MassUtils/c++/src/common/noncopyable.h
 * -> Author       : Mass

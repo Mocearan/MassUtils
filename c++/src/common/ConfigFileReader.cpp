@@ -1,58 +1,29 @@
 
-
 /* =============================================================================
-* -> FilePath     : /MassUtils/c++/src/common/configfileutils.hpp
+* -> FilePath     : /WeTalkServer2/src/base/utils/ConfigFileReader.cpp
 * -> Author       : Mass
-* -> Date         : 2020-06-19 21:56:34
+* -> Date         : 2020-06-19 18:19:44
 * -> version      : 
 * -> LastEditors  : Mass
-* -> LastEditTime : 2020-06-19 21:56:35
+* -> LastEditTime : 2020-06-19 18:19:45
 * -> Description  : 
 * =============================================================================*/
 
-#ifndef __MASS_COMMON_CONFIGFILEUTILS_HPP__
-#define __MASS_COMMON_CONFIGFILEUTILS_HPP__
-
-#include "singleton.h"
-#include "simplelogutils.hpp"
+#include "ConfigFileReader.h"
+#include "simplelogutil.h"
 
 #include <cstring>
 
 BEGIN_NAMESPACE_MASS
 
-class CConfigFileReader final
-    : public Mass::Singleton<CConfigFileReader>
-{
-    friend class Mass::Singleton<CConfigFileReader>;
-    CConfigFileReader(const string &filename);
-
-public:
-    virtual ~CConfigFileReader();
-
-    string GetConfigName(const string &name);
-    int SetConfigValue(const string &name, const string &value);
-
-private:
-    void _load_file(const string &filename);
-    int _write_file(const string &filename = "");
-    void _parse_line(char *line);
-    char *trim(char *name);
-
-private:
-    bool m_bLoaded = false;
-    StringMap m_config_map;
-    string m_config_file;
-};
-
-
-CConfigFileReader::CConfigFileReader(const string &filename)
+CConfigFileReader::CConfigFileReader(const std::string &filename)
 {
     _load_file(filename);
 }
 
 CConfigFileReader::~CConfigFileReader() {}
 
-int CConfigFileReader::SetConfigValue(const string &name, const string &value)
+int CConfigFileReader::SetConfigValue(const std::string &name, const std::string &value)
 {
     if (not m_bLoaded)
         return -1;
@@ -68,34 +39,34 @@ int CConfigFileReader::SetConfigValue(const string &name, const string &value)
 
 #include <iostream>
 
-string CConfigFileReader::GetConfigName(const string &name)
+std::string CConfigFileReader::GetConfigName(const std::string &name)
 {
-    string value;
+    std::string value;
 
     if (not m_bLoaded)
         return value;
 
     auto it = m_config_map.find(name);
-    if (it not_eq m_config_map.end())
+    if(it not_eq m_config_map.end())
         value = it->second.data();
 
     return value;
 }
 
-void CConfigFileReader::_parse_line(char *line)
+void CConfigFileReader::_parse_line(char* line)
 {
-    char *p = strchr(line, '=');
-    if (p == nullptr)
+    char* p = strchr(line, '=');
+    if(p == nullptr)
         return;
 
     *p = 0;
     char *key = trim(line);
     char *value = trim(p + 1);
-    if (key and value)
+    if(key and value)
         m_config_map.insert({key, value});
 }
 
-int CConfigFileReader::_write_file(const string &filename)
+int CConfigFileReader::_write_file(const std::string &filename)
 {
     FILE *fp = nullptr;
 
@@ -108,13 +79,11 @@ int CConfigFileReader::_write_file(const string &filename)
         return -1;
 
     char szPaire[128]{'\0'};
-    for (const auto &it : m_config_map)
-    {
+    for (const auto &it : m_config_map){
         bzero(szPaire, sizeof(szPaire));
         snprintf(szPaire, sizeof(szPaire), "%s=%s\n", it.first.data(), it.second.data());
         auto ret = fwrite(szPaire, strlen(szPaire), 1, fp);
-        if (ret not_eq 1)
-        {
+        if (ret not_eq 1){
             fclose(fp);
             return -1;
         }
@@ -123,21 +92,19 @@ int CConfigFileReader::_write_file(const string &filename)
     return 0;
 }
 
-void CConfigFileReader::_load_file(const string &filename)
+void CConfigFileReader::_load_file(const std::string &filename)
 {
     m_config_file.clear();
     m_config_file.append(filename);
 
     auto fp = fopen(filename.data(), "r");
-    if (not fp)
-    {
+    if (not fp){
         log(loglevel::ERROR, "can not open %s, errno = %d", filename.data(), errno);
         return;
     }
 
     char buf[256]{'\0'};
-    for (;;)
-    {
+    for (;;){
         char *p = fgets(buf, 256, fp);
         if (not p)
             break;
@@ -161,7 +128,7 @@ void CConfigFileReader::_load_file(const string &filename)
     m_bLoaded = true;
 }
 
-char *CConfigFileReader::trim(char *name)
+char* CConfigFileReader::trim(char* name)
 {
     // remove starting space or tab
     char *start_pos = name;
@@ -173,8 +140,7 @@ char *CConfigFileReader::trim(char *name)
 
     // remove ending space or tab
     char *end_pos = name + strlen(name) - 1;
-    while ((*end_pos == ' ') or (*end_pos == '\t'))
-    {
+    while ((*end_pos == ' ') or (*end_pos == '\t')){
         *end_pos = 0;
         end_pos--;
     }
@@ -187,5 +153,3 @@ char *CConfigFileReader::trim(char *name)
 }
 
 END_NAMESPACE_MASS
-
-#endif // __MASS_COMMON_CONFIGFILEUTILS_HPP__

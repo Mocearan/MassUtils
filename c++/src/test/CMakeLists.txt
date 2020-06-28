@@ -23,7 +23,10 @@ target_link_libraries(tcrypt
     ssl crypto
 )
 
+add_executable(tlog t_simplelog.cpp ${BASE_PATH}/simplelogutil.cpp ${BASE_PATH}/stringutils.cpp ${BASE_PATH}/datetimeutil.cpp)
+
 install(TARGETS tsingle RUNTIME DESTINATION test)
 install(TARGETS tstring RUNTIME DESTINATION test)
 install(TARGETS tcrypt RUNTIME DESTINATION test)
+install(TARGETS tlog RUNTIME DESTINATION test)
 #install(FILES ${CONFIG_PATH}/log4cplus.properties DESTINATION test)

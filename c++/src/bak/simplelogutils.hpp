@@ -2,16 +2,6 @@
 /* =============================================================================
 * -> FilePath     : /MassUtils/c++/src/common/simplelogutils.hpp
 * -> Author       : Mass
-* -> Date         : 2020-06-22 14:54:05
-* -> version      : 
-* -> LastEditors  : Mass
-* -> LastEditTime : 2020-06-22 14:54:06
-* -> Description  : 
-* =============================================================================*/
-
-/* =============================================================================
-* -> FilePath     : /MassUtils/c++/src/common/simplelogutils.hpp
-* -> Author       : Mass
 * -> Date         : 2020-06-19 22:03:29
 * -> version      : 
 * -> LastEditors  : Mass
@@ -56,35 +46,9 @@ void set_log_filename(const std::string &filename);
 
 void set_log_rotate_size(int size);
 
-void log(const std::string &fmt, ...)
-{
-    va_list ap;
-    va_start(ap, fmt.data());
-
-    if (LogUtil::should_log(loglevel::INFO))
-        LogUtil::logging(loglevel::INFO, "%s:%d " + fmt, __FILE__, __LINE__, ap);
-    va_end(ap);
-}
-
-void log(loglevel l)
-{
-    if (LogUtil::should_log(l))
-        LogStream(l) << __FILE__ << ':' << __LINE__ << ' ';
-}
-
-void log(loglevel l, const std::string &fmt, ...)
-{
-    va_list ap;
-    va_start(ap, fmt.data());
-    
-    if(LogUtil::should_log(l))
-        LogUtil::logging(l, "%s:%d " + fmt, __FILE__, __LINE__, ap);
-    va_end(ap);
-}
-
 class LogUtil {
 public:
-    static const string level_to_string(const loglevel level);
+    static const std::string level_to_string(const loglevel level);
     static loglevel string_to_level(const std::string &level);
 
     static void logging(loglevel level, const std::string &fmt, ...);
@@ -219,12 +183,12 @@ private:
     StringBuilder m_stream;
 };
 
-const string LogUtil::level_to_string(const loglevel level)
+const std::string LogUtil::level_to_string(const loglevel level)
 {
     if(level < 0 or level > 4)
         return "DEBUG";
 
-    static string lstr[] = {"TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"};
+    static std::string lstr[] = {"TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"};
     return lstr[level];
 }
 
@@ -281,6 +245,32 @@ void LogUtil::check_and_rotate()
                 freopen(Provider::GetInstance()->s_log_filename().data(), "a", Provider::GetInstance()->s_log_stream());
         }
     }
+}
+
+void log(const std::string &fmt, ...)
+{
+    va_list ap;
+    va_start(ap, fmt.data());
+
+    if (LogUtil::should_log(loglevel::INFO))
+        LogUtil::logging(loglevel::INFO, "%s:%d " + fmt, __FILE__, __LINE__, ap);
+    va_end(ap);
+}
+
+void log(loglevel l)
+{
+    if (LogUtil::should_log(l))
+        LogStream(l) << __FILE__ << ':' << __LINE__ << ' ';
+}
+
+void log(loglevel l, const std::string &fmt, ...)
+{
+    va_list ap;
+    va_start(ap, fmt.data());
+
+    if (LogUtil::should_log(l))
+        LogUtil::logging(l, "%s:%d " + fmt, __FILE__, __LINE__, ap);
+    va_end(ap);
 }
 
 END_NAMESPACE_MASS

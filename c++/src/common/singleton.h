@@ -1,4 +1,3 @@
-
 /* =============================================================================
 * -> FilePath     : /Mass/MassUtils/c++/src/common/singleton.h
 * -> Author       : Mass
@@ -8,14 +7,14 @@
 * -> LastEditTime : 2020-06-23 13:57:33
 * -> Description  : 
 *   a no memory leakage and thread-safe singleton template
-*   add initor, use by a public static int init(void).
+*   add initor, use by a public int init(void).
 *
 *@Usage:
 *       class A : public Singleton<A> {
             friend class Singleton<A>;
-            A() : Singleton(A::init) {...}
+            A() : Singleton(std::bind(&A::init, this)) {...}
         public:
-            static int init(void);
+            int init(void);
             virtual ~A(){...}
 
         ...// class A's own stuff
@@ -33,8 +32,6 @@
 #include <mutex>
 #include <functional>
 
-using namespace std;
-
 BEGIN_NAMESPACE_MASS
 
 template <typename T>
@@ -47,7 +44,7 @@ public:
         std::call_once(
             s_bCalled, [=](Args &&... args) {
                 Singleton::s_instance.reset(new T(std::forward<Args>(args)...));
-                if (Singleton::bInit and Singleton::ini())
+                if (Singleton::bInit and Singleton::s_instance->ini())
                     Singleton::DelInstance();
             },
             std::forward<Args>(args)...);
@@ -68,18 +65,19 @@ protected:
     }
 
     template <class StaticInitor>
-    Singleton(StaticInitor i)
+    Singleton(StaticInitor i) 
     {
         bInit = true;
+        //ini = std::bind(i, s_instance);
         ini = i;
     }
 
     virtual ~Singleton() {}
-
+    
 private:
     static std::shared_ptr<T> s_instance;
     static std::once_flag s_bCalled;
-    static std::function<int(void)> ini;
+    std::function<int(void)> ini;
     static bool bInit;
 };
 
@@ -89,8 +87,8 @@ std::shared_ptr<T> Singleton<T>::s_instance = nullptr;
 template <typename T>
 std::once_flag Singleton<T>::s_bCalled;
 
-template <typename T>
-std::function<int(void)> Singleton<T>::ini;
+// template <typename T>
+// std::function<int(void)> Singleton<T>::ini;
 
 template <typename T>
 bool Singleton<T>::bInit = false;

@@ -396,7 +396,7 @@ time_t CDateUtil::parse_rfc822_date(const std::string& date)
     return timegm(&t);
 }
 
-time_t CDateUtil::parse_rfc822_date(const std::string& date)
+time_t CDateUtil::parse_iso8601_date(const std::string &date)
 {
     struct tm t;
     strptime(date.c_str(), "%Y-%m-%dT%H:%M:%SZ", &t);

@@ -12,6 +12,10 @@
 #ifndef __MASSUTILS_CPP_COMMON_INCLUDE_BASEDEF_H__
 #define __MASSUTILS_CPP_COMMON_INCLUDE_BASEDEF_H__
 
+#include <sstream>
+#include <map>
+#include <string>
+
 #define BEGIN_NAMESPACE(x) \
     namespace x            \
     {
@@ -20,14 +24,13 @@
 #define BEGIN_NAMESPACE_MASS BEGIN_NAMESPACE(Mass)
 #define END_NAMESPACE_MASS END_NAMESPACE(Mass)
 
+BEGIN_NAMESPACE_MASS
+
 using byte = unsigned char;
 
-#include <sstream>
 using StringBuilder = std::ostringstream;
-#include <sstream>
-using StringBuilder = std::ostringstream;
-#include <map>
-#include <string>
 using StringMap = std::map<std::string, std::string>;
+
+END_NAMESPACE_MASS
 
 #endif //__MASSUTILS_CPP_COMMON_INCLUDE_BASEDEF_H__
