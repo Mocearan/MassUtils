@@ -32,6 +32,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-g -O2 -DNDEBUG")
 set(PROJECT_BUILD_ROOT ${PROJECT_SOURCE_DIR}/../build)
 set(3RD_PATH ${PROJECT_SOURCE_DIR}/../3rdparty)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../lib)
+set(COMM_PATH ${PROJECT_SOURCE_DIR}/common)
 #set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
 
 message(STATUS "Create Building Directory : " ${PROJECT_BUILD_ROOT})
@@ -55,7 +56,7 @@ message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_T
 
 
 add_subdirectory(common)
-#add_subdirectory(libsecurity/src)
+add_subdirectory(concurrent)
 #add_subdirectory(db_proxy_server)
 #add_subdirectory(file_server)
 #add_subdirectory(http_msg_server)
