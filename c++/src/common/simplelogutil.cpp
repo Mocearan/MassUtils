@@ -54,7 +54,7 @@ void LogUtil::logging(loglevel level, const std::string &fmt, ...)
               << (ts % 1000) << ' '
               << fmt.data()
               << std::endl;
-
+    
     va_list ap;
     va_start(ap, fmt.data());
     vfprintf(s_log_stream, final_fmt.str().data(), ap);
@@ -82,12 +82,14 @@ void LogUtil::check_and_rotate()
 
 void log(const std::string &fmt, ...)
 {
+    char temp[64]{'\0'};
     va_list ap;
     va_start(ap, fmt.data());
+    vsnprintf(temp, 64, fmt.data(), ap);
+    va_end(ap);
 
     if (LogUtil::should_log(loglevel::INFO))
-        LogUtil::logging(loglevel::INFO, "%s:%d " + fmt, __FILE__, __LINE__, ap);
-    va_end(ap);
+        LogUtil::logging(loglevel::INFO, std::string("%s:%d ") + temp, __FILE__, __LINE__);
 }
 
 void log(loglevel l)

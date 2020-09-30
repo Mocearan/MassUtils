@@ -18,6 +18,10 @@
             virtual ~A(){...}
 
         ...// class A's own stuff
+                ...// class A's own stuff
+          // note : if stuff not change after init, safe.
+          //      else depend on lock(mutex) keep safe in multi-thread context.
+        }
         }
 *@Note:
     -lpthread [call_once]
@@ -28,6 +32,7 @@
 
 #include "noncopyable.h"
 
+#include <atomic>
 #include <memory>
 #include <mutex>
 #include <functional>
@@ -78,8 +83,10 @@ private:
     static std::shared_ptr<T> s_instance;
     static std::once_flag s_bCalled;
     std::function<int(void)> ini;
-    static bool bInit;
-};
+    //static bool bInit;
+    static std::atomic<bool> bInit;
+    
+};  
 
 template <typename T>
 std::shared_ptr<T> Singleton<T>::s_instance = nullptr;
@@ -91,7 +98,7 @@ std::once_flag Singleton<T>::s_bCalled;
 // std::function<int(void)> Singleton<T>::ini;
 
 template <typename T>
-bool Singleton<T>::bInit = false;
+std::atomic<bool> Singleton<T>::bInit = false;
 
 END_NAMESPACE_MASS
 

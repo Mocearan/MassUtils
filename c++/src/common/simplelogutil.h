@@ -57,7 +57,7 @@ public:
 
     static inline bool should_log(const loglevel level)
     {
-        return level <= s_log_level;
+        return level >= s_log_level;
     }
 
 

@@ -90,7 +90,6 @@ print_help(){
 dependency_install(){
     echo "install dependency..."
     sleep 1
-    yum -y install cmake
     yum -y install libuuid-devel
     yum -y install openssl-devel
     yum -y install curl-devel

@@ -7,7 +7,7 @@
 * -> LastEditors  : Mass
 * -> LastEditTime : 2020-06-28 15:44:37
 * -> Description  : 
-            a implement for rwlock base pthread's thread specified data.
+            a implement for rwlock base pthread's thread specified data.(pthread)
             不知道好不好用，用来学习读写锁的原理。
 * =============================================================================*/
 
